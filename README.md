@@ -140,32 +140,45 @@ Node Registered
 
 <img width="1446" height="916" alt="Screenshot 2026-03-29 164436" src="https://github.com/user-attachments/assets/4c24a0bd-dd72-4bf8-bd81-58ae5fba767c" />
 
+---
+
 Node Sudah saling terhubung satu sama lain
 
 <img width="1453" height="952" alt="Screenshot 2026-03-29 164520" src="https://github.com/user-attachments/assets/38dfdf00-a0e2-467d-9cb0-0c97ef22f9f3" />
 <img width="1448" height="895" alt="Screenshot 2026-03-29 164637" src="https://github.com/user-attachments/assets/575023c3-732c-4d0b-b8ed-563373f27b3c" />
 <img width="1462" height="924" alt="Screenshot 2026-03-29 164706" src="https://github.com/user-attachments/assets/86da3919-03aa-4f58-87a4-826872701639" />
 
+---
+
 Mining Reward
 
 <img width="527" height="210" alt="Screenshot 2026-03-29 165517" src="https://github.com/user-attachments/assets/8583dd16-f12b-4bcc-bc47-e7f690b0bf04" />
+
+---
 
 Node 1 Sudah terhubung ke Node 2 dan 3
 
 <img width="1460" height="1028" alt="Screenshot 2026-03-29 172159" src="https://github.com/user-attachments/assets/b954a38f-bf83-46b7-8fd4-f2a74554968b" />
 
+---
+
 Node 2 Sudah Terhubung ke Node 1 dan 3
 
 <img width="1460" height="1047" alt="Screenshot 2026-03-29 172514" src="https://github.com/user-attachments/assets/a181b5f8-cee5-4235-9c22-253c8b2a59d5" />
+
+---
 
 Node 3 Sudah Terhubung ke Node 1 dan 2
 
 <img width="1458" height="1010" alt="Screenshot 2026-03-29 172647" src="https://github.com/user-attachments/assets/52232197-ea02-4ac6-8807-d40fe3a1e188" />
 
+---
+
 Hasil ```GET```
 
 <img width="1458" height="956" alt="Screenshot 2026-03-29 172737" src="https://github.com/user-attachments/assets/8e71b6e1-63dc-481f-9b5d-5566be15fd78" />
 
+---
 
 
 
