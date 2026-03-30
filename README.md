@@ -135,7 +135,8 @@ Endpoint:
 7. Node lain melakukan sinkronisasi
 
 ### Hasil Demo
-
+Hasil GET
+<img width="1458" height="956" alt="Screenshot 2026-03-29 172737" src="https://github.com/user-attachments/assets/e93ce02c-7e5e-41dd-8327-ff380023f919" />
 
 
 
