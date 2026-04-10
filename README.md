@@ -1,3 +1,12 @@
+# Anggota Kelompok
+
+| Nama | NRP |
+| -------- | -------- |
+| Fico Simhanandi   | 5027231030   |
+| Muhammad Arsy Athallah   | 5027221048   |
+| Michael Laurence Djie    | 5006231001   |
+| Muhammad Harisul Haq    | 5006231028   |
+
 # Blockchain How to Run
 
 ## Install Dependencies
