@@ -1,185 +1,195 @@
-# 🧱 Blockchain Simulation with Flask API
+# Blockchain How to Run
 
-Proyek ini merupakan simulasi sederhana sistem **Blockchain** menggunakan Python dan Flask API.  
-Sistem ini mendukung konsep dasar blockchain seperti **digital signature**, **multi-node network**, **mining reward**, dan **sinkronisasi blockchain**.
+## Install Dependencies
 
----
+Run this once before starting the nodes:
 
-## 🚀 Fitur Utama
-
-### 🔐 Digital Signature
-Setiap transaksi ditandatangani menggunakan **private key** dan diverifikasi menggunakan **public key**.  
-Hal ini memastikan:
-- Keaslian transaksi
-- Keamanan data
-- Tidak bisa dipalsukan
-
----
-
-### ⛏️ Mining Reward
-Node yang melakukan proses mining akan mendapatkan reward sebesar:
-```67```
-
-
-Reward diberikan melalui transaksi khusus dari `SYSTEM`.
-
----
-
-### 🌐 Multi Node (3 Node)
-Sistem menggunakan 3 node yang berjalan secara terpisah:
-
-| Node  | Port |
-|------|------|
-| Node1 | 5000 |
-| Node2 | 5001 |
-| Node3 | 5002 |
-
-Setiap node saling terhubung (mesh network) dan dapat berkomunikasi satu sama lain.
-
----
-
-### 🔗 Flask API + Postman
-Seluruh sistem dijalankan menggunakan **Flask REST API** dan diuji menggunakan **Postman**.
-
----
-
-## ⚙️ Instalasi
-
-Install dependency:
-```bash
-pip install flask requests cryptography
+```powershell
+pip install flask cryptography
 ```
-### ▶️ Menjalankan Node
-Jalankan 3 terminal berbeda:
 
-```bash
+What they do:
+
+- `profile`: shows node name, public key, and balance
+- `chain`: shows the blockchain
+- `mempool`: shows pending transactions
+- `mine`: mines pending transactions and gives the miner reward
+- `sync`: pulls the longest valid chain from registered nodes
+- `register`: registers another node
+- `send`: sends coins to another node using the receiver's public key
+
+## Full Test Flow
+
+### 1. Start 3 Nodes
+
+Open 3 separate terminals and keep them running:
+
+```powershell
 python node.py -n Node1 -p 5000
+```
+
+```powershell
 python node.py -n Node2 -p 5001
+```
+
+```powershell
 python node.py -n Node3 -p 5002
 ```
-### 🔗 Menghubungkan Node (Mesh Network)
-Gunakan Postman atau curl:
 
-Endpoint:
-```bash
-POST /register
+### 2. Check Node Profiles
+
+Run:
+
+```powershell
+python cli.py profile -p 5000
+python cli.py profile -p 5001
+python cli.py profile -p 5002
 ```
-Contoh Request:
-```bash
-{
-  "node": "http://127.0.0.1:5001"
-}
+
+Note:
+
+- the private key is managed inside the node and is not printed for safety
+
+### 3. Register All Nodes
+
+Run these in another terminal:
+
+```powershell
+python cli.py register -p 5000 --node http://127.0.0.1:5001
+python cli.py register -p 5000 --node http://127.0.0.1:5002
+python cli.py register -p 5001 --node http://127.0.0.1:5000
+python cli.py register -p 5001 --node http://127.0.0.1:5002 
+python cli.py register -p 5002 --node http://127.0.0.1:5000
+python cli.py register -p 5002 --node http://127.0.0.1:5001
 ```
-Lakukan untuk semua kombinasi node:
 
-Node1 → Node2 & Node3
-Node2 → Node1 & Node3
-Node3 → Node1 & Node2
+### 4. Get Node2 Public Key
 
-### 🔍 Mengecek Node
-```bash
-GET /nodes
+Run:
+
+```powershell
+python cli.py profile -p 5001
 ```
-### 💸 Mengirim Transaksi
 
-Endpoint:
-```bash
-POST /transaction
+Copy the full `public_key` from the output, including:
+
+```text
+-----BEGIN PUBLIC KEY-----
+...
+-----END PUBLIC KEY-----
 ```
-Body:
-```bash
-{
-  "sender": "PUBLIC_KEY",
-  "receiver": "PUBLIC_KEY",
-  "amount": 1,
-  "signature": "SIGNATURE_HEX"
-}
+
+### 5. Send From Node1 to Node2
+
+Replace the placeholder below with Node2's public key:
+
+```powershell
+python cli.py send -p 5000 --amount 1 --receiver "-----BEGIN PUBLIC KEY-----\n...PASTE_NODE2_KEY...\n-----END PUBLIC KEY-----\n"
 ```
-### ⛏️ Mining Block
 
-Endpoint:
-```bash
-GET /mine
+### 6. Check Mempool on Another Node
+
+Run:
+
+```powershell
+python cli.py mempool -p 5002
 ```
-Fungsi:
 
-- Mengambil transaksi dari mempool
-- Menambahkan reward
-- Membuat block baru
+### 7. Mine the Block on Node3
 
-### 🔄 Sinkronisasi Blockchain
+Run:
 
-Endpoint:
-```bash
-GET /sync
+```powershell
+python cli.py mine -p 5002
 ```
-Node akan:
 
-- Membandingkan chain dengan node lain
-- Mengambil chain terpanjang (longest chain)
+### 8. Sync the Other Nodes
 
-### 👤 Cek Profil & Saldo
+Run:
 
-Endpoint:
-```bash
-👤 Cek Profil & Saldo
+```powershell
+python cli.py sync -p 5000
+python cli.py sync -p 5001
 ```
-### 🧠 Cara Kerja Sistem
 
-1. User membuat transaksi
-2. Transaksi ditandatangani dengan private key
-3. Node memverifikasi digital signature
-4. Transaksi masuk ke mempool
-5. Miner melakukan mining
-6. Block ditambahkan ke blockchain
-7. Node lain melakukan sinkronisasi
+### 9. Verify Final Balances
 
-### Hasil Demo
+Run:
 
-Node Registered
+```powershell
+python cli.py profile -p 5000
+python cli.py profile -p 5001
+python cli.py profile -p 5002
+```
 
-<img width="1446" height="916" alt="Screenshot 2026-03-29 164436" src="https://github.com/user-attachments/assets/4c24a0bd-dd72-4bf8-bd81-58ae5fba767c" />
+### 10. Inspect the Final Chain
 
----
+Run:
 
-Node Sudah saling terhubung satu sama lain
+```powershell
+python cli.py chain -p 5000
+```
 
-<img width="1453" height="952" alt="Screenshot 2026-03-29 164520" src="https://github.com/user-attachments/assets/38dfdf00-a0e2-467d-9cb0-0c97ef22f9f3" />
-<img width="1448" height="895" alt="Screenshot 2026-03-29 164637" src="https://github.com/user-attachments/assets/575023c3-732c-4d0b-b8ed-563373f27b3c" />
-<img width="1462" height="924" alt="Screenshot 2026-03-29 164706" src="https://github.com/user-attachments/assets/86da3919-03aa-4f58-87a4-826872701639" />
+# Documentation
 
----
+## 1. Creating each node profile/wallet
 
-Mining Reward
+![alt text](img/1.png)
 
-<img width="527" height="210" alt="Screenshot 2026-03-29 165517" src="https://github.com/user-attachments/assets/8583dd16-f12b-4bcc-bc47-e7f690b0bf04" />
+![alt text](img/2.png)
 
----
+![alt text](img/3.png)
 
-Node 1 Sudah terhubung ke Node 2 dan 3
+## 2. Node 1, 2, 3 Profile
 
-<img width="1460" height="1028" alt="Screenshot 2026-03-29 172159" src="https://github.com/user-attachments/assets/b954a38f-bf83-46b7-8fd4-f2a74554968b" />
+![alt text](img/4.png)
 
----
+## 3. Node 1 before registering
 
-Node 2 Sudah Terhubung ke Node 1 dan 3
+![alt text](img/5.png)
 
-<img width="1460" height="1047" alt="Screenshot 2026-03-29 172514" src="https://github.com/user-attachments/assets/a181b5f8-cee5-4235-9c22-253c8b2a59d5" />
+## 4. Node 1 after registering
 
----
+![alt text](img/6.png)
 
-Node 3 Sudah Terhubung ke Node 1 dan 2
+![alt text](img/7.png)
 
-<img width="1458" height="1010" alt="Screenshot 2026-03-29 172647" src="https://github.com/user-attachments/assets/52232197-ea02-4ac6-8807-d40fe3a1e188" />
+## 5. Registering Node 1, 2
 
----
+![alt text](img/8.png)
 
-Hasil ```GET```
+## 6. Transaction from Node 1 (Port 5000) to Node 2 (Port 5001)
 
-<img width="1458" height="956" alt="Screenshot 2026-03-29 172737" src="https://github.com/user-attachments/assets/8e71b6e1-63dc-481f-9b5d-5566be15fd78" />
+![alt text](img/9.png)
 
----
+## 7. Checking the mempool from Node 3
 
+![alt text](img/10.png)
 
+## 8. Node 3 mines the block
 
+![alt text](img/11.png)
 
+## 9. Node 3's chain after mining
+
+![alt text](img/12.png)
+
+## 10. Node 1's chain before syncing
+
+![alt text](img/13.png)
+
+## 11. Syncing both for Node 1 and 2
+
+![alt text](img/14.png)
+
+## 12. Node 1's chain after syncing
+
+![alt text](img/15.png)
+
+## 13. All Node's profile and the balance
+
+![alt text](img/16.png)
+
+## 14. `fake_test.py` for testing validity (Validating using private key)
+
+![alt text](img/17.png)
